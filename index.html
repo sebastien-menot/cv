@@ -409,6 +409,19 @@
   }
   .tl-photo-wrap:hover::after { opacity: 1; }
 
+  /* ── TIMELINE ANIMATION (GIF) ── */
+  .tl-anim { margin: .2rem 0 1rem; max-width: 460px; }
+  .tl-anim img {
+    width: 100%; height: auto; display: block;
+    border-radius: 6px; border: 2px solid var(--border);
+    box-shadow: 0 4px 16px rgba(0,0,0,.4);
+  }
+  .tl-anim-cap {
+    display: block; margin-top: .45rem;
+    font-family: 'DM Mono', monospace; font-size: .68rem;
+    letter-spacing: .04em; color: var(--muted);
+  }
+
   /* ── LIGHTBOX MODAL ── */
   #lb-overlay {
     display: none; position: fixed; inset: 0; z-index: 1000;
@@ -1297,7 +1310,11 @@
           <li contenteditable="false">Design and develop miniaturized, <em class="kw">biocompatible</em> hardware solutions (<em class="kw">silicone</em>, <em class="kw">epoxy</em>, <em class="kw">ceramics</em>, <em class="kw">titanium</em> and emerging materials)</li>
           <li contenteditable="false">Apply <em class="kw">Design for Assembly</em> (DFA) to miniaturized implant and wearable hardware for robust, repeatable micro-assembly</li>
           <li contenteditable="false">Drive all phases of medical device development: concept, user requirements, design inputs <em class="kw">(DIs),</em> detailed design, design output <em class="kw">(DOs),</em> <em class="kw">risk</em> <em class="kw">analysis,</em> <em class="kw">V&amp;V</em></li>
-        </ul></div>
+        </ul>
+        <div class="tl-anim">
+          <img src="anim-jets.gif" alt="Transient CFD simulation (Ansys Fluent)" loading="lazy">
+          <span class="tl-anim-cap">Transient CFD simulation (Ansys Fluent)</span>
+        </div></div>
     </div>
 
     <div id="hepia-exp" class="tl-item visible" style="transition-delay: 0.06s;">
