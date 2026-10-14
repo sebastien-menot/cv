@@ -223,7 +223,12 @@
     position: relative; margin-bottom: 3rem;
     opacity: 0; transform: translateX(-20px);
     transition: opacity .5s, transform .5s;
+    /* la nav fixe fait 56 px : sans marge, un saut d'ancre cache la date du poste.
+       80 px alignent le haut du bloc sur les titres de section, qui tombent a 81 px. */
+    scroll-margin-top: 80px;
   }
+  /* meme correction pour la carte Education, cible du menu et sans padding propre */
+  #education { scroll-margin-top: 80px; }
   .tl-item.visible { opacity: 1; transform: none; }
   .tl-dot {
     position: absolute; left: -2.5rem;
@@ -780,6 +785,28 @@
     .vc-hl-handle { fill:rgba(255,180,0,.9); stroke:#000; stroke-width:1.5; cursor:nwse-resize; }
     .vc-hl-handle-rot { fill:rgba(255,100,0,.9); stroke:#000; stroke-width:1.5; cursor:crosshair; }
     .vc-hl-edge { fill:rgba(255,220,80,.9); stroke:#000; stroke-width:1.5; }
+
+  /* ── BOUTON BACK : retour au point de depart d'un saut interne ── */
+  #back-btn {
+    position: fixed; left: 1.5rem; bottom: 1.5rem; z-index: 300;
+    display: flex; align-items: center; gap: .5rem;
+    background: var(--panel); color: var(--gold2);
+    border: 1px solid var(--gold); border-radius: 8px;
+    padding: .6rem 1rem; cursor: pointer;
+    font-family: 'DM Mono', monospace; font-size: .72rem; letter-spacing: .12em;
+    box-shadow: 0 6px 22px rgba(0,0,0,.5);
+    opacity: 0; transform: translateY(10px); pointer-events: none;
+    transition: opacity .25s ease, transform .25s ease, background .2s, border-color .2s;
+  }
+  #back-btn.show { opacity: 1; transform: none; pointer-events: auto; }
+  #back-btn:hover { background: var(--navy2); border-color: var(--gold2); }
+  #back-count { color: var(--muted); letter-spacing: .04em; }
+  @media (max-width: 760px) {
+    #back-btn { left: 1rem; bottom: 1rem; padding: .55rem .85rem; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    #back-btn { transition: opacity .01s; transform: none; }
+  }
 
   /* ── PUBLIC VERSION — no edit UI ── */
   #edit-toggle, #vc-edit-btn, #kw-btn,
@@ -2191,6 +2218,51 @@
   <button id="kw-btn" onclick="toggleKwMode()" class="kw-active">🔆 Mots-clés</button>
   <button onclick="saveHTML()">💾 Sauvegarder</button>
 </div>
+
+<!-- BACK BUTTON -->
+<button id="back-btn" type="button" aria-label="Return to the point you jumped from">
+  <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M19 12H5"></path><path d="M12 19l-7-7 7-7"></path></svg>
+  <span>BACK</span><span id="back-count"></span>
+</button>
+
+<script>
+  // Retour exact a l'endroit d'ou l'on a clique un lien interne.
+  // Pile : chaque saut empile sa position de depart, BACK depile une position a la fois.
+  (function () {
+    var btn = document.getElementById('back-btn');
+    var cnt = document.getElementById('back-count');
+    if (!btn) return;
+    var stack = [];
+
+    function refresh() {
+      btn.classList.toggle('show', stack.length > 0);
+      cnt.textContent = stack.length > 1 ? '(' + stack.length + ')' : '';
+    }
+
+    document.addEventListener('click', function (e) {
+      // Un clic deja traite ailleurs (changement de vignette) n'est pas un saut
+      if (e.defaultPrevented) return;
+      var t = e.target;
+      if (!t || !t.closest) return;
+      // Liens d'ancre classiques, et zones du V-Cycle qui utilisent scrollIntoView
+      if (!t.closest('a[href^="#"]') && !t.closest('[data-href]')) return;
+      var y = window.pageYOffset;
+      // Deux sauts depuis le meme endroit ne valent qu'un retour
+      if (stack.length && Math.abs(stack[stack.length - 1] - y) < 4) return;
+      stack.push(y);
+      refresh();
+    });
+
+    btn.addEventListener('click', function () {
+      if (!stack.length) return;
+      var y = stack.pop();
+      // forme a 2 arguments : elle herite du scroll-behavior:smooth de la page,
+      // la variante a objet d'options n'est pas honoree partout
+      window.scrollTo(0, y);
+      refresh();
+    });
+  })();
+</script>
 
 
 
