@@ -762,11 +762,11 @@
   body.edit-mode .tl-photo-wrap::before,
   body.edit-mode .hero-banner-wrap::before { display: none !important; }
     /* ===== V-CYCLE (composant autonome : tout est piloté par l'objet VCYCLE du script) ===== */
-    #vcycle { padding: 4rem 2rem 3rem; }
+    #vcycle { padding: 4rem 1.5rem 3rem; }
     .vcycle-subtitle { color: var(--muted); font-family: "DM Mono", monospace; font-size: .78rem; text-align: center; margin-bottom: 1.6rem; letter-spacing: .05em; }
     .vc-stage {
       position: relative; isolation: isolate;
-      max-width: 1500px; margin: 0 auto; padding: 2rem 1.6rem;
+      max-width: none; margin: 0; padding: 2.2rem 2rem;
       border: 1px solid var(--border); border-radius: 14px;
       background: var(--vc-bg, var(--panel));
       box-shadow: 0 10px 40px rgba(0,0,0,.45);
@@ -778,7 +778,7 @@
       opacity: var(--vc-bg-opacity, 0);
     }
     .vc-grid { display: grid; gap: 1.4rem 3.6rem; align-items: center;
-               grid-template-columns: minmax(0, 1fr) minmax(440px, 1.55fr) minmax(0, 1fr); }
+               grid-template-columns: minmax(0, 1fr) minmax(460px, 1.45fr) minmax(0, 1fr); }
     .vc-col { display: flex; flex-direction: column; gap: 1.1rem; position: relative; z-index: 2; }
     .vc-vbox { position: relative; z-index: 1; padding-top: 300px; }
     .vc-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; overflow: visible; }
@@ -788,26 +788,26 @@
       --c: var(--gold);
       display: block; position: relative; text-decoration: none; color: var(--text);
       background: rgba(10,14,26,.78); border: 1px solid var(--border); border-left: 3px solid var(--c);
-      border-radius: 10px; padding: .95rem 1.05rem .85rem;
+      border-radius: 10px; padding: 1.1rem 1.25rem 1rem;
       transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
     }
     .vc-card.on, .vc-card:focus-visible { transform: translateY(-2px); border-color: var(--c); outline: none;
       box-shadow: 0 8px 26px rgba(0,0,0,.45), 0 0 0 1px var(--c) inset; }
     .vc-stage.focus .vc-card:not(.on) { opacity: .4; }
     .vc-card-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .45rem; }
-    .vc-logo { display: inline-flex; align-items: center; justify-content: center; height: 34px; min-width: 34px; padding: 4px 8px;
+    .vc-logo { display: inline-flex; align-items: center; justify-content: center; height: 40px; min-width: 40px; padding: 5px 9px;
                background: #fff; border-radius: 7px; flex-shrink: 0; }
-    .vc-logo img { height: 26px; width: auto; max-width: 170px; display: block; }
+    .vc-logo img { height: 30px; width: auto; max-width: 200px; display: block; }
     .vc-logo b { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: .06em; color: #1b2a4a; line-height: 1; }
-    .vc-company { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .05em; color: var(--c); line-height: 1; }
-    .vc-years { font-family: 'DM Mono', monospace; font-size: .66rem; letter-spacing: .1em; color: var(--muted); white-space: nowrap; text-transform: uppercase; }
-    .vc-sector { font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .04em; color: var(--gold2); margin-top: .35rem; }
-    .vc-role { font-weight: 600; color: var(--white); font-size: .92rem; margin-top: .15rem; }
+    .vc-company { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 1.8rem; letter-spacing: .05em; color: var(--c); line-height: 1; }
+    .vc-years { font-family: 'DM Mono', monospace; font-size: .78rem; letter-spacing: .1em; color: var(--muted); white-space: nowrap; text-transform: uppercase; }
+    .vc-sector { font-family: 'DM Mono', monospace; font-size: .8rem; letter-spacing: .04em; color: var(--gold2); margin-top: .35rem; }
+    .vc-role { font-weight: 600; color: var(--white); font-size: 1.08rem; margin-top: .15rem; }
     .vc-body { display: flex; gap: .8rem; margin-top: .45rem; align-items: flex-start; }
-    .vc-text { font-size: .8rem; line-height: 1.5; opacity: .88; flex: 1; }
-    .vc-thumb { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; object-fit: contain; background: #fff; padding: 4px; }
+    .vc-text { font-size: .95rem; line-height: 1.55; opacity: .88; flex: 1; }
+    .vc-thumb { width: 84px; height: 84px; flex-shrink: 0; border-radius: 8px; object-fit: contain; background: #fff; padding: 4px; }
     .vc-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .6rem; }
-    .vc-tag { font-family: 'DM Mono', monospace; font-size: .6rem; padding: .12rem .45rem; border-radius: 999px; border: 1px solid #5b6f92; color: #9fb0cc; }
+    .vc-tag { font-family: 'DM Mono', monospace; font-size: .7rem; padding: .15rem .55rem; border-radius: 999px; border: 1px solid #5b6f92; color: #9fb0cc; }
     .vc-card.on .vc-tag { border-color: var(--c); color: var(--c); }
 
     /* ── projecteur au-dessus du V : produit agrandi + domaine ── */
