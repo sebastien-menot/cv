@@ -465,6 +465,11 @@
     transition: filter .4s;
   }
   .hobby-block:hover .hobby-photo { filter: brightness(.95) saturate(1.1) sepia(0) hue-rotate(0deg); }
+  @media (max-width: 600px) {
+    .hobby-block { flex-direction: column; align-items: stretch; padding: 1.1rem 1rem; }
+    .hobby-photo { width: 100%; height: 160px; }
+    .hobby-text { min-width: 0; overflow-wrap: anywhere; }
+  }
 
   /* ── SKILLS PHOTO ── */
   .skills-banner {
@@ -525,6 +530,11 @@
   .tl-body ul li:hover {
     background: rgba(201,168,76,.07);
   }
+  /* puces en bloc + puce « › » positionnée : en flex, les mots-clés <em> ne passaient pas à la ligne sur mobile */
+  .tl-body ul li { display: block; position: relative; padding-left: 1.35rem; }
+  .tl-body ul li::before { position: absolute; left: .45rem; }
+  .info-card ul li { display: block; position: relative; padding-left: 1rem; }
+  .info-card ul li::before { position: absolute; left: 0; }
   .kw {
     color: inherit;
     font-style: normal;
@@ -751,40 +761,103 @@
   body.edit-mode .hero-banner-wrap .edit-overlay { display: flex; }
   body.edit-mode .tl-photo-wrap::before,
   body.edit-mode .hero-banner-wrap::before { display: none !important; }
-    /* ===== V-CYCLE ===== */
+    /* ===== V-CYCLE (composant autonome : tout est piloté par l'objet VCYCLE du script) ===== */
     #vcycle { padding: 4rem 2rem 3rem; }
-    .vcycle-subtitle { color: var(--muted); font-family: "DM Mono"; font-size: .78rem; text-align: center; margin-bottom: 1.5rem; letter-spacing: .05em; }
-    .vc-slide-wrap { max-width: 1800px; margin: 0 auto; position: relative; border-radius: 10px; overflow: hidden; box-shadow: 0 8px 40px rgba(0,0,0,.7); background: transparent; }
-    .vc-slide-img { width: 100%; display: block; }
-    .vc-overlay { position: absolute; top: 0; left: 0; width: 100%; height: 100%; }
-    .company-zone { fill: transparent; cursor: pointer; stroke: transparent; stroke-width: 2; transition: fill .15s, stroke .15s; }
-    .company-zone:hover, .company-zone.zone-selected { fill: transparent; stroke: transparent; }
-    .ph-seg { fill: none; stroke: rgba(213,94,0,0); stroke-width: 3; opacity: 1; transition: stroke .3s; pointer-events: none; }
-    .ph-seg.active { animation: ph-pulse 1.2s ease-in-out infinite; }
-    @keyframes ph-pulse { 0%,100%{stroke:rgba(213,94,0,.9);stroke-width:3;} 50%{stroke:rgba(213,94,0,1);stroke-width:5;} } 50%{stroke:rgba(213,94,0,1);stroke-width:10;} } 50%{stroke:rgba(255,255,80,1);stroke-width:5;} }
-    .vc-slide-wrap.edit-mode .ph-seg { fill:transparent; stroke:rgba(0,0,0,.7); stroke-width:3; stroke-dasharray:6,3; pointer-events:all; cursor:pointer; }
-    .vc-slide-wrap.edit-mode .ph-seg.ph-selected { fill:rgba(0,0,0,.06); stroke:rgba(0,0,0,.95); stroke-dasharray:none; stroke-width:2.5; cursor:move; }
-    .vc-edit-btn { display:block; margin:.5rem auto 1rem; padding:.4rem 1.1rem; background:rgba(200,170,90,.12); border:1px solid rgba(200,170,90,.45); color:rgba(200,170,90,.9); border-radius:5px; cursor:pointer; font-family:"DM Mono",monospace; font-size:.78rem; letter-spacing:.05em; }
-    .vc-edit-btn:hover, .vc-edit-btn.active { background:rgba(200,170,90,.28); border-color:rgba(200,170,90,.8); }
-    .vc-editor-panel { display:none; max-width:960px; margin:0 auto .8rem; background:rgba(8,8,18,.93); border:1px solid rgba(200,170,90,.32); border-radius:7px; padding:.75rem 1rem; color:#ccc; font-family:"DM Mono",monospace; font-size:.77rem; }
-    .vc-editor-panel.visible { display:block; }
-    .vc-editor-panel .ep-row { display:flex; gap:.6rem; align-items:center; flex-wrap:wrap; margin:.3rem 0; }
-    .vc-editor-panel label { color:rgba(200,170,90,.8); display:flex; align-items:center; gap:.3rem; }
-    .vc-editor-panel input[type=number] { width:65px; background:#0c0c18; border:1px solid #444; color:#eee; padding:2px 5px; border-radius:3px; font-family:inherit; }
-    .ep-zone-list { display:flex; flex-wrap:wrap; gap:.35rem; margin:.4rem 0 .6rem; }
-    .ep-zone-chip { padding:.2rem .65rem; border:1px solid #3a3a4a; border-radius:4px; cursor:pointer; background:#111; color:#888; font-size:.74rem; font-family:"DM Mono",monospace; }
-    .ep-zone-chip.sel { border-color:rgba(200,170,90,.75); color:rgba(200,170,90,.9); background:rgba(200,170,90,.09); }
-    .vc-save-btn { padding:.3rem .8rem; background:rgba(200,170,90,.16); border:1px solid rgba(200,170,90,.45); color:rgba(200,170,90,.9); border-radius:4px; cursor:pointer; font-size:.76rem; font-family:inherit; }
-    .vc-save-btn:hover { background:rgba(200,170,90,.32); }
-    .zone-edit-label { pointer-events:none; }
-    .vc-slide-wrap.edit-mode .company-zone { cursor:move; stroke-dasharray:8,4; stroke:rgba(0,0,0,.55); stroke-width:2; }
-    .vc-slide-wrap.edit-mode .company-zone.zone-selected { stroke:rgba(200,170,90,1); stroke-dasharray:none; fill:rgba(200,170,90,.08); }
-    .vc-handle { fill:rgba(200,170,90,.9); stroke:#000; stroke-width:1.5; cursor:nwse-resize; }
-    .vc-handle-rot { fill:rgba(100,180,255,.9); stroke:#000; stroke-width:1.5; cursor:crosshair; }
-    .vc-handle-line { stroke:rgba(200,170,90,.5); stroke-width:1; stroke-dasharray:4,3; pointer-events:none; }
-    .vc-hl-handle { fill:rgba(255,180,0,.9); stroke:#000; stroke-width:1.5; cursor:nwse-resize; }
-    .vc-hl-handle-rot { fill:rgba(255,100,0,.9); stroke:#000; stroke-width:1.5; cursor:crosshair; }
-    .vc-hl-edge { fill:rgba(255,220,80,.9); stroke:#000; stroke-width:1.5; }
+    .vcycle-subtitle { color: var(--muted); font-family: "DM Mono", monospace; font-size: .78rem; text-align: center; margin-bottom: 1.6rem; letter-spacing: .05em; }
+    .vc-stage {
+      position: relative; isolation: isolate;
+      max-width: 1500px; margin: 0 auto; padding: 2rem 1.6rem;
+      border: 1px solid var(--border); border-radius: 14px;
+      background: var(--vc-bg, var(--panel));
+      box-shadow: 0 10px 40px rgba(0,0,0,.45);
+    }
+    /* image de fond optionnelle (VCYCLE.background.image), sous le contenu */
+    .vc-stage::before {
+      content: ""; position: absolute; inset: 0; z-index: -1; border-radius: inherit;
+      background: var(--vc-bg-image, none) center / cover no-repeat;
+      opacity: var(--vc-bg-opacity, 0);
+    }
+    .vc-grid { display: grid; gap: 1.4rem 3.6rem; align-items: center;
+               grid-template-columns: minmax(0, 1fr) minmax(440px, 1.55fr) minmax(0, 1fr); }
+    .vc-col { display: flex; flex-direction: column; gap: 1.1rem; position: relative; z-index: 2; }
+    .vc-vbox { position: relative; z-index: 1; padding-top: 300px; }
+    .vc-links { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 3; overflow: visible; }
+
+    /* ── cartes d'expérience ── */
+    .vc-card {
+      --c: var(--gold);
+      display: block; position: relative; text-decoration: none; color: var(--text);
+      background: rgba(10,14,26,.78); border: 1px solid var(--border); border-left: 3px solid var(--c);
+      border-radius: 10px; padding: .95rem 1.05rem .85rem;
+      transition: transform .2s ease, border-color .2s ease, box-shadow .2s ease, opacity .2s ease;
+    }
+    .vc-card.on, .vc-card:focus-visible { transform: translateY(-2px); border-color: var(--c); outline: none;
+      box-shadow: 0 8px 26px rgba(0,0,0,.45), 0 0 0 1px var(--c) inset; }
+    .vc-stage.focus .vc-card:not(.on) { opacity: .4; }
+    .vc-card-head { display: flex; align-items: center; justify-content: space-between; gap: .6rem; margin-bottom: .45rem; }
+    .vc-logo { display: inline-flex; align-items: center; justify-content: center; height: 34px; min-width: 34px; padding: 4px 8px;
+               background: #fff; border-radius: 7px; flex-shrink: 0; }
+    .vc-logo img { height: 26px; width: auto; max-width: 170px; display: block; }
+    .vc-logo b { font-family: 'Bebas Neue', sans-serif; font-size: 1.15rem; letter-spacing: .06em; color: #1b2a4a; line-height: 1; }
+    .vc-company { display: block; font-family: 'Bebas Neue', sans-serif; font-size: 1.45rem; letter-spacing: .05em; color: var(--c); line-height: 1; }
+    .vc-years { font-family: 'DM Mono', monospace; font-size: .66rem; letter-spacing: .1em; color: var(--muted); white-space: nowrap; text-transform: uppercase; }
+    .vc-sector { font-family: 'DM Mono', monospace; font-size: .68rem; letter-spacing: .04em; color: var(--gold2); margin-top: .35rem; }
+    .vc-role { font-weight: 600; color: var(--white); font-size: .92rem; margin-top: .15rem; }
+    .vc-body { display: flex; gap: .8rem; margin-top: .45rem; align-items: flex-start; }
+    .vc-text { font-size: .8rem; line-height: 1.5; opacity: .88; flex: 1; }
+    .vc-thumb { width: 64px; height: 64px; flex-shrink: 0; border-radius: 8px; object-fit: contain; background: #fff; padding: 4px; }
+    .vc-tags { display: flex; flex-wrap: wrap; gap: .3rem; margin-top: .6rem; }
+    .vc-tag { font-family: 'DM Mono', monospace; font-size: .6rem; padding: .12rem .45rem; border-radius: 999px; border: 1px solid #5b6f92; color: #9fb0cc; }
+    .vc-card.on .vc-tag { border-color: var(--c); color: var(--c); }
+
+    /* ── projecteur au-dessus du V : produit agrandi + domaine ── */
+    .vc-spot { position: absolute; left: 4%; width: 92%; top: 0; height: 290px; z-index: 2; display: flex; flex-direction: column;
+               align-items: center; justify-content: center; gap: .45rem; text-align: center; pointer-events: none;
+               opacity: 0; transform: scale(.92); transition: opacity .25s ease, transform .25s ease; }
+    .vc-stage.spot .vc-spot { opacity: 1; transform: none; }
+    .vc-spot img { max-height: 210px; max-width: 90%; object-fit: contain; background: #fff; border-radius: 12px; padding: 6px;
+                   box-shadow: 0 10px 30px rgba(0,0,0,.55), 0 0 0 2px var(--sc, var(--gold)); }
+    .vc-spot img[hidden] { display: none; }
+    .vc-spot .dom { font-family: 'Bebas Neue', sans-serif; font-size: clamp(1.2rem, 1.9vw, 1.9rem); line-height: 1.05; letter-spacing: .04em;
+                    color: var(--sc, var(--gold2)); max-width: 100%; padding: .3rem .8rem; border-radius: 8px;
+                    background: rgba(10,14,26,.88); box-shadow: 0 6px 18px rgba(0,0,0,.5); }
+
+    /* ── le V ── */
+    .vc-svg { width: 100%; height: auto; display: block; overflow: visible; }
+    .vc-seg { transition: opacity .25s, transform .3s, filter .3s; }
+    .vc-seg text { font-family: 'DM Mono', monospace; font-weight: 500; pointer-events: none; }
+    .vc-seg .band { cursor: pointer; }
+    .vc-seg .ring, .vc-seg .glow { opacity: 0; transition: opacity .25s; pointer-events: none; fill: none; }
+    .vc-stage.focus .vc-seg:not(.on) { opacity: .25; }
+    .vc-seg.on { filter: drop-shadow(0 6px 10px rgba(0,0,0,.6)); }
+    .vc-seg.on .ring { opacity: 1; stroke: var(--hc, var(--gold2)); }
+    .vc-link { stroke: #9fb0cc; stroke-width: 2; fill: none; }
+    .vc-link-head { fill: #9fb0cc; }
+    .vc-link-label { font-family: 'DM Mono', monospace; font-size: 14px; font-weight: 500; fill: #d4dce8; letter-spacing: .14em; }
+    .vc-center-title { font-family: 'Bebas Neue', sans-serif; font-size: 30px; letter-spacing: 3px; fill: var(--white); }
+    .vc-center-sub { font-family: 'DM Mono', monospace; font-size: 9.5px; letter-spacing: 2px; fill: var(--muted); }
+
+    /* ── traits de liaison (pointillés qui avancent vers le V) ── */
+    .vc-lk { fill: none; stroke-linecap: round; }
+    .vc-lk-flow { stroke-dasharray: 2 9; animation: vc-flow .9s linear infinite; }
+    @keyframes vc-flow { to { stroke-dashoffset: -11; } }
+    .vc-lk-dot { animation: vc-pop .35s ease-out both; transform-box: fill-box; transform-origin: center; }
+    @keyframes vc-pop { from { transform: scale(0); } to { transform: scale(1); } }
+
+    @media (max-width: 1100px) {
+      .vc-grid { grid-template-columns: 1fr 1fr; }
+      .vc-vbox { grid-column: 1 / -1; grid-row: 1; max-width: 560px; margin: 0 auto; width: 100%; padding-top: 0; }
+      .vc-spot { display: none; }
+    }
+    @media (max-width: 680px) {
+      #vcycle { padding: 3rem 1rem 2rem; }
+      .vc-stage { padding: 1.2rem .9rem; }
+      .vc-grid { grid-template-columns: 1fr; }
+    }
+    @media (prefers-reduced-motion: reduce) {
+      .vc-card, .vc-seg, .vc-seg .ring, .vc-spot { transition: none; }
+      .vc-lk-flow, .vc-lk-dot { animation: none; }
+    }
 
   /* ── BOUTON BACK : retour au point de depart d'un saut interne ── */
   #back-btn {
@@ -809,7 +882,7 @@
   }
 
   /* ── PUBLIC VERSION — no edit UI ── */
-  #edit-toggle, #vc-edit-btn, #kw-btn,
+  #edit-toggle, #kw-btn,
   .edit-overlay, .img-delete-btn, .add-photo-btn,
   .img-caption-edit, .stat-width-ctrl { display: none !important; }
   [contenteditable] { pointer-events: none; cursor: default; }
@@ -947,7 +1020,7 @@
   .dd-title { font-family: 'Bebas Neue', sans-serif; font-size: 1.35rem; letter-spacing: .05em; color: var(--white); }
   .dd-sub { font-family: 'DM Mono', monospace; font-size: .72rem; color: var(--muted); }
   .dd-blurb { font-size: .92rem; color: var(--text); margin: .3rem 0 1rem; }
-  .dd-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(430px,1fr)); gap: .85rem; }
+  .dd-cards { display: grid; grid-template-columns: repeat(auto-fit, minmax(min(430px, 100%), 1fr)); gap: .85rem; }
   .dd-card {
     display: block; text-decoration: none;
     background: rgba(20,28,46,.5); border: 1px solid var(--border);
@@ -1014,6 +1087,10 @@
   @media (max-width: 760px) {
     .donut-grid { grid-template-columns: 1fr; }
     #panorama { padding: 3.5rem 5vw; }
+  }
+  @media (max-width: 520px) {
+    .dd-thumb { float: none; width: 100%; margin: .1rem 0 .6rem; }
+    .donut-detail { padding: 1.1rem 1rem; }
   }
 </style>
 <section id="panorama">
@@ -1357,14 +1434,317 @@
 
   <section id="vcycle" class="section">
     <h2 class="section-title">V-Cycle Engineering Map</h2>
-    <p class="vcycle-subtitle">Survol un bloc d'expérience pour mettre en évidence les phases couvertes · Clic pour naviguer</p>
-    <button id="vc-edit-btn" class="vc-edit-btn">✎ Editer les zones</button>
-    <div id="vc-editor-panel" class="vc-editor-panel"></div>
-    <div class="vc-slide-wrap">
-      <img class="vc-slide-img" src="img-02.png" alt="">
-      <svg class="vc-overlay" viewBox="0 0 1800 1013" xmlns="http://www.w3.org/2000/svg"><rect class="company-zone" id="zone-epfl" x="5" y="5" width="451.14" height="279.51" rx="4" data-href="#epfl-exp"></rect><rect class="ph-seg" id="hl-epfl-0" data-hlzid="epfl" data-hlidx="0" x="501.04" y="266.92" width="143.19" height="251.28" rx="30" transform="rotate(-89.5,572.635,392.56)"></rect><rect class="company-zone" id="zone-wyss" x="599.95" y="4.24" width="483.65" height="294.17" rx="4" data-href="#wyss-exp"></rect><rect class="ph-seg" id="hl-wyss-0" data-hlzid="wyss" data-hlidx="0" x="530.41" y="310.45" width="148.98" height="328.13" rx="30" transform="rotate(-31,604.9,474.515)"></rect><rect class="company-zone" id="zone-hach" x="1261.58" y="5" width="533.42" height="279.17" rx="4" data-href="#hach-exp"></rect><rect class="ph-seg" id="hl-hach-0" data-hlzid="hach" data-hlidx="0" x="940.43" y="298.4" width="147.23" height="538.37" rx="30" transform="rotate(32,1014.045,567.585)"></rect><rect class="ph-seg" id="hl-hach-1" data-hlzid="hach" data-hlidx="1" x="497" y="468" width="685" height="147" rx="30"></rect><rect class="company-zone" id="zone-debio" x="5" y="564.5965709983969" width="562.6359075409587" height="428.04751078788985" rx="4" data-href="#debio-exp"></rect><rect class="ph-seg" id="hl-debio-0" data-hlzid="debio" data-hlidx="0" x="568.7212433292644" y="288.38348059717384" width="164.61315209758268" height="527.2717531695623" rx="30" transform="rotate(-31,651.0278193780558,552.019357181955)"></rect><rect class="company-zone" id="zone-cytiva" x="1215" y="325" width="580" height="375" rx="4" data-href="#cytiva-exp"></rect><rect class="ph-seg" id="hl-cytiva-0" data-hlzid="cytiva" data-hlidx="0" x="498.2635957817033" y="469" width="682.7614902580742" height="145.889795534283" rx="30"></rect><rect class="ph-seg" id="hl-cytiva-1" data-hlzid="cytiva" data-hlidx="1" x="746.9918436038432" y="492.19737712413007" width="535.5572254157144" height="148.6402301212425" rx="30" transform="rotate(-58,1014.7704563117004,566.5174921847513)"></rect><rect class="company-zone" id="zone-crane" x="1260.5354108636207" y="700" width="534.4645891363793" height="304.29322453588605" rx="4" data-href="#crane-exp"></rect><rect class="ph-seg" id="hl-crane-0" data-hlzid="crane" data-hlidx="0" x="673" y="624" width="312.99011672931346" height="273.32865127907303" rx="50"></rect></svg>
+    <p class="vcycle-subtitle" id="vc-subtitle"></p>
+    <div class="vc-stage" id="vc-stage">
+      <svg class="vc-links" id="vc-links" aria-hidden="true"></svg>
+      <div class="vc-grid">
+        <div class="vc-col" id="vc-left"></div>
+        <div class="vc-vbox" id="vc-vbox">
+          <div class="vc-spot" id="vc-spot" aria-hidden="true"><img id="vc-spot-img" alt="" hidden><div class="dom" id="vc-spot-dom"></div></div>
+        </div>
+        <div class="vc-col" id="vc-right"></div>
+      </div>
     </div>
   </section>
+<script>
+/* ============================================================================
+   V-CYCLE ENGINEERING MAP — composant autonome
+   Tout le contenu se modifie ici, dans l'objet VCYCLE : textes, logos, phases,
+   couleurs, images, fond. Aucune image de fond n'est nécessaire.
+   - phases    : les blocs du V, dans le sens de lecture. arm : 'left' |
+                 'bottom' | 'right' ; weight : longueur relative sur le bras.
+   - links     : flèches horizontales entre deux phases (from -> to).
+   - companies : une carte par expérience. side : 'left' | 'right' ; l'ordre
+                 dans la liste = l'ordre de haut en bas dans la colonne.
+                 phases : clés des phases couvertes (reliées au survol),
+                 href : ancre de la section détaillée, img : photo du produit,
+                 logo : fichier du logo (sinon logoText).
+                 years : durée de repli ; à l'affichage, la carte reprend la durée
+                 calculée dans la chronologie (section Experience, même href).
+                 Placement actuel = celui qui minimise la longueur des traits
+                 (720 placements testés). Après un changement de contenu,
+                 taper vcycleOptimize() dans la console du navigateur
+                 (fenêtre large) pour obtenir le nouvel ordre conseillé.
+   - background: color (couleur ou dégradé CSS), image (fichier, option),
+                 imageOpacity (0 à 1).
+   ========================================================================== */
+var VCYCLE = {
+  subtitle: "Hover an experience to highlight the development phases it covered · Click to jump to the details",
+  center: { title: "V-MODEL", sub: "PRODUCT DEVELOPMENT" },
+  background: {
+    color: "radial-gradient(ellipse at 50% 35%, #16223a 0%, #0d1424 55%, #0a0e1a 100%)",
+    image: "",            // ex. "img-03.png"
+    imageOpacity: 0.12
+  },
+  phases: [
+    { key: "concept",     label: "Concept",                         arm: "left",   weight: 0.30, color: "#b9c3d3", ink: "#0f1a2e" },
+    { key: "spec",        label: "Specification",                   arm: "left",   weight: 0.35, color: "#a3b0c4", ink: "#0f1a2e" },
+    { key: "design",      label: "Design",                          arm: "left",   weight: 0.35, color: "#8494ad", ink: "#0f1a2e" },
+    { key: "impl",        label: "Implementation · Manufacturing",  arm: "bottom", weight: 1,    color: "#5b6f92", ink: "#ffffff" },
+    { key: "integration", label: "Integration",                     arm: "right",  weight: 0.27, color: "#3a73b3", ink: "#ffffff" },
+    { key: "vv",          label: "Verification & Validation",       arm: "right",  weight: 0.50, color: "#2f66a6", ink: "#ffffff" },
+    { key: "sustaining",  label: "Sustaining",                      arm: "right",  weight: 0.23, color: "#25578f", ink: "#ffffff" }
+  ],
+  links: [
+    { from: "spec",   to: "vv",          label: "VERIFIES" },
+    { from: "design", to: "integration", label: "INTEGRATES" }
+  ],
+  companies: [
+    { id: "epfl", side: "left", name: "EPFL · Sensile", accent: "#e2453c", logo: "logo-epfl.png",
+      sector: "Sensile (spin-off) · Camera tracking", role: "R&D Engineer", years: "5 yr 2 mo",
+      text: "Led the mechanical, electronic and embedded software development of a motorized miniature surveillance camera at EPFL–Sensile, including technology transfer to industry, while also supervising multiple R&D projects and student theses.",
+      img: "img-24.jpg", href: "#epfl-exp", phases: ["concept"] },
+    { id: "wyss", side: "left", name: "Wyss Center · Ability", accent: "#9db4e0", logo: "logo-wyss.png",
+      sector: "Class III implantable / applied device", role: "Sr. Mechanical Engineer", years: "since July 2023",
+      text: "Led the mechanical design and prototyping of Class III implantable and wearable neuroengineering devices, developing miniaturized, biocompatible systems from concept to detailed design in compliance with international medical device standards.",
+      img: "img-04.webp", href: "#wyss-exp", phases: ["concept", "spec"] },
+    { id: "debio", side: "left", name: "Debiotech", accent: "#e8534a", logo: "logo-debio.png",
+      sector: "Insulin microfluidic MEMS pumpchip", role: "Mechanical Engineer", years: "4 yr 6 mo",
+      text: "Developed innovative micro-mechanical solutions for medical devices, including the full mechanical design of a MEMS-based miniature insulin pump (patented), and contributed to advanced manufacturing and assembly processes for microfluidic systems.",
+      img: "img-21.jpg", href: "#debio-exp", phases: ["concept", "spec", "design"] },
+    { id: "cytiva", side: "right", name: "Cytiva", accent: "#2bb39a", logo: "logo-cytiva.png",
+      sector: "Cell & gene therapy", role: "V&V Manager", years: "1 yr 4 mo",
+      text: "Led the Verification & Validation team for disposable medical devices, supporting cell and gene therapy R&D by standardizing V&V practices and the development of innovative single-use solutions.",
+      img: "img-11.png", href: "#cytiva-exp", phases: ["spec", "vv"] },
+    { id: "hach", side: "right", name: "Hach", accent: "#3d9be9", logo: "logo-hach.png",
+      sector: "Dissolved gas sensors", role: "Sr. V&V / Mech. Engineer · Project Manager", years: "5 yr 1 mo",
+      text: "Led cross-functional R&D and V&V projects to improve the reliability and performance of precision water analysis sensors, achieving major quality gains and securing key revenue streams in critical industries.",
+      img: "img-14.jpg", href: "#hach-exp", phases: ["spec", "integration", "vv", "sustaining"] },
+    { id: "crane", side: "right", name: "Crane Payment Innovations", accent: "#e0b341", logo: "logo-crane.svg",
+      sector: "Cash dispensing device", role: "Sr. R&D Engineer · Project Manager", years: "9 yr 5 mo",
+      text: "Design, validation and industrialization of high-speed micro-technical systems for banknote recognition, leading international projects from concept to production with a strong focus on reliability, manufacturability and patent innovation.",
+      img: "img-18.jpg", href: "#crane-exp", phases: ["design", "impl", "integration"] }
+  ]
+};
+
+(function () {
+  var C = VCYCLE, NS = "http://www.w3.org/2000/svg";
+  var stage = document.getElementById("vc-stage"), linksSvg = document.getElementById("vc-links");
+  if (!stage) return;
+  function el(tag, attrs, parent) { var e = document.createElementNS(NS, tag); for (var k in attrs) e.setAttribute(k, attrs[k]); if (parent) parent.appendChild(e); return e; }
+  function esc(s) { return String(s).replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;").replace(/"/g, "&quot;"); }
+
+  // ── fond et sous-titre ──
+  var bg = C.background || {};
+  if (bg.color) stage.style.setProperty("--vc-bg", bg.color);
+  if (bg.image) { stage.style.setProperty("--vc-bg-image", "url('" + bg.image + "')"); stage.style.setProperty("--vc-bg-opacity", bg.imageOpacity != null ? bg.imageOpacity : 0.12); }
+  document.getElementById("vc-subtitle").textContent = C.subtitle || "";
+  var phaseByKey = {}; C.phases.forEach(function (p) { phaseByKey[p.key] = p; });
+
+  // ── géométrie du V : un seul tracé continu (bras droit, arc tangent de rayon RV, bras droit),
+  //    découpé en blocs selon la longueur ; la bande garde la même épaisseur partout ──
+  var W = 600, H = 560, BAND = 84, GAP = 5, RV = 74, BOTTOM_EXT = 34;
+  var L0 = [62, 34], R0 = [538, 34], VX = [300, 566];          // haut des bras, sommet virtuel
+  var ux = VX[0] - L0[0], uy = VX[1] - L0[1], un = Math.hypot(ux, uy); ux /= un; uy /= un;
+  var dT = RV / (ux / uy), CV = [300, VX[1] - RV / ux];
+  var L1 = [VX[0] - dT * ux, VX[1] - dT * uy], R1 = [VX[0] + dT * ux, VX[1] - dT * uy];
+  var armLen = Math.hypot(L1[0] - L0[0], L1[1] - L0[1]);
+  var a0 = Math.atan2(L1[1] - CV[1], L1[0] - CV[0]), a1 = Math.atan2(R1[1] - CV[1], R1[0] - CV[0]);
+  var arcLen = RV * (a0 - a1), TOTAL = 2 * armLen + arcLen;
+  function pointAt(s) {
+    if (s <= armLen) return [L0[0] + ux * s, L0[1] + uy * s];
+    if (s <= armLen + arcLen) { var t = a0 - (s - armLen) / RV; return [CV[0] + RV * Math.cos(t), CV[1] + RV * Math.sin(t)]; }
+    var r = s - armLen - arcLen; return [R1[0] + ux * r, R1[1] - uy * r];
+  }
+  var pt = function (p) { return p[0].toFixed(1) + " " + p[1].toFixed(1); };
+  function subPath(s0, s1) { var d = "M" + pt(pointAt(s0)), n = Math.max(2, Math.ceil((s1 - s0) / 2)); for (var i = 1; i <= n; i++) d += " L" + pt(pointAt(s0 + (s1 - s0) * i / n)); return d; }
+  var spans = { left: [0, armLen - BOTTOM_EXT], bottom: [armLen - BOTTOM_EXT, armLen + arcLen + BOTTOM_EXT], right: [armLen + arcLen + BOTTOM_EXT, TOTAL] };
+  var bottomMid = [CV[0], CV[1] + RV];
+  var segs = [];
+  ["left", "bottom", "right"].forEach(function (arm) {
+    var list = C.phases.filter(function (p) { return p.arm === arm; }), sp = spans[arm];
+    var tot = list.reduce(function (s, p) { return s + p.weight; }, 0), cur = sp[0];
+    list.forEach(function (p) {
+      var len = (sp[1] - sp[0]) * p.weight / tot, s0 = cur + (cur > 0 ? GAP / 2 : 0), s1 = cur + len - (cur + len < TOTAL ? GAP / 2 : 0);
+      cur += len;
+      segs.push({ p: p, d: subPath(s0, s1), mid: arm === "bottom" ? bottomMid : pointAt((s0 + s1) / 2) });
+    });
+  });
+
+  var svg = el("svg", { viewBox: "0 0 " + W + " " + H, class: "vc-svg", role: "img",
+    "aria-label": "V-model of product development: " + C.phases.map(function (p) { return p.label; }).join(", ") }, document.getElementById("vc-vbox"));
+  var defs = el("defs", {}, svg);
+  var fl = el("filter", { id: "vc-blur", x: "-30%", y: "-30%", width: "160%", height: "160%" }, defs); el("feGaussianBlur", { stdDeviation: "6" }, fl);
+
+  // flèches horizontales entre les branches
+  var armX = function (y, side) { var x = L0[0] + (y - L0[1]) * ux / uy; return side === "left" ? x : W - x; };
+  (C.links || []).forEach(function (lk) {
+    var s = segs.filter(function (s) { return s.p.key === lk.from; })[0]; if (!s) return;
+    var y = s.mid[1], x1 = armX(y, "left") + BAND / 2 + 10, x2 = armX(y, "right") - BAND / 2 - 10;
+    el("path", { d: "M" + x2 + " " + y + " H" + (x1 + 12), class: "vc-link" }, svg);
+    el("path", { d: "M" + x1 + " " + y + " L" + (x1 + 14) + " " + (y - 7) + " L" + (x1 + 14) + " " + (y + 7) + " Z", class: "vc-link-head" }, svg);
+    el("circle", { cx: x2, cy: y, r: 3.5, class: "vc-link-head" }, svg);
+    el("text", { x: (x1 + x2) / 2 + 6, y: y - 9, "text-anchor": "middle", class: "vc-link-label" }, svg).textContent = lk.label || "";
+  });
+  if (C.center) {
+    el("text", { x: 300, y: 104, "text-anchor": "middle", class: "vc-center-title" }, svg).textContent = C.center.title || "";
+    el("text", { x: 300, y: 121, "text-anchor": "middle", class: "vc-center-sub" }, svg).textContent = C.center.sub || "";
+  }
+
+  // blocs du V (halo, contour de survol, bande, libellé) ; extrémités hautes arrondies
+  var segEls = {}, fits = [];
+  segs.forEach(function (s, i) {
+    var g = el("g", { class: "vc-seg", "data-phase": s.p.key }, svg);
+    var cap = i === 0 ? "M" + pt(L0) + " L" + pt(pointAt(1)) : i === segs.length - 1 ? "M" + pt(R0) + " L" + pt(pointAt(TOTAL - 1)) : null;
+    [["glow", { stroke: "var(--hc, #e8c97a)", "stroke-width": BAND + 16, filter: "url(#vc-blur)" }],
+     ["ring", { "stroke-width": BAND + 8 }],
+     ["band", { fill: "none", stroke: s.p.color, "stroke-width": BAND, id: "vc-seg-" + i }]].forEach(function (L) {
+      var at = { d: s.d, class: L[0] }; for (var k in L[1]) at[k] = L[1][k];
+      el("path", at, g);
+      if (cap) { var c = {}; for (var k2 in at) if (k2 !== "id") c[k2] = at[k2]; c.d = cap; c["stroke-linecap"] = "round"; el("path", c, g); }
+    });
+    if (s.p.arm === "bottom") {
+      s.p.label.split(" · ").forEach(function (ln, k, all) {
+        el("text", { x: s.mid[0], y: s.mid[1] + 4 + (k - (all.length - 1) / 2) * 18, "text-anchor": "middle", "font-size": 14, fill: s.p.ink, "dominant-baseline": "central" }, g).textContent = ln;
+      });
+    } else {
+      var tx = el("text", { "font-size": 15, fill: s.p.ink, "dominant-baseline": "central" }, g);
+      el("textPath", { href: "#vc-seg-" + i, startOffset: "50%", "text-anchor": "middle" }, tx).textContent = s.p.label;
+      fits.push({ tx: tx, i: i });
+    }
+    el("title", {}, g).textContent = s.p.label;
+    segEls[s.p.key] = { g: g, s: s };
+    g.querySelectorAll(".band").forEach(function (b) {
+      b.addEventListener("mouseenter", function () { focusPhase(s.p.key); });
+      b.addEventListener("mouseleave", clearFocus);
+    });
+  });
+  // un libellé trop long pour son bloc est réduit (utile si on change les textes)
+  function fitLabels() { fits.forEach(function (f) { var tl = f.tx.getComputedTextLength(), room = document.getElementById("vc-seg-" + f.i).getTotalLength() * 0.88; if (tl > room) f.tx.setAttribute("font-size", (15 * room / tl).toFixed(1)); }); }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(fitLabels); else fitLabels();
+
+  // ── cartes ──
+  var cardEls = [];
+  C.companies.forEach(function (c) {
+    var a = document.createElement("a");
+    a.className = "vc-card"; a.href = c.href || "#"; a.style.setProperty("--c", c.accent || "var(--gold)");
+    a.innerHTML =
+      '<div class="vc-card-head"><span class="vc-logo">' + (c.logo ? '<img src="' + esc(c.logo) + '" alt="' + esc(c.name) + ' logo">' : '<b>' + esc(c.logoText || c.name.slice(0, 3)) + '</b>') + '</span>' +
+      '<span class="vc-years">' + esc(c.years || "") + '</span></div>' +
+      '<span class="vc-company">' + esc(c.name) + '</span>' +
+      '<div class="vc-sector">' + esc(c.sector || "") + '</div><div class="vc-role">' + esc(c.role || "") + '</div>' +
+      '<div class="vc-body"><div class="vc-text">' + esc(c.text || "") + '</div>' + (c.img ? '<img class="vc-thumb" src="' + esc(c.img) + '" alt="" loading="lazy">' : '') + '</div>' +
+      '<div class="vc-tags">' + (c.phases || []).map(function (k) { return phaseByKey[k] ? '<span class="vc-tag">' + esc(phaseByKey[k].label) + '</span>' : ''; }).join("") + '</div>';
+    document.getElementById(c.side === "right" ? "vc-right" : "vc-left").appendChild(a);
+    a.addEventListener("mouseenter", function () { focusCard(c); });
+    a.addEventListener("focus", function () { focusCard(c); });
+    a.addEventListener("mouseleave", clearFocus);
+    a.addEventListener("blur", clearFocus);
+    cardEls.push({ c: c, a: a });
+  });
+
+  // ── traits orthogonaux : ils contournent le V par l'extérieur ──
+  // Gouttières verticales entre les colonnes et le V ; passage au-dessus du V pour une carte
+  // de la moitié haute, au-dessous pour une carte de la moitié basse ; bloc du bas par-dessous.
+  var RAD = 10;
+  function rel(r) { var s = stage.getBoundingClientRect(); return { x: r.left - s.left, y: r.top - s.top, w: r.width, h: r.height }; }
+  function toStage(x, y) { var p = svg.createSVGPoint(); p.x = x; p.y = y; var c = p.matrixTransform(svg.getScreenCTM()), st = stage.getBoundingClientRect(); return { x: c.x - st.left, y: c.y - st.top }; }
+  function geom() {
+    var Lc = rel(document.getElementById("vc-left").getBoundingClientRect()), Rc = rel(document.getElementById("vc-right").getBoundingClientRect()),
+        B = rel(document.getElementById("vc-vbox").getBoundingClientRect()), h = BAND / 2;
+    return { gL: (Lc.x + Lc.w + B.x) / 2, gR: (B.x + B.w + Rc.x) / 2, yTop: toStage(0, L0[1] - h).y - 16, yBot: toStage(0, bottomMid[1] + h).y + 16, nx: uy, ny: ux, h: h };
+  }
+  function target(key, G) {
+    var s = segEls[key].s, h = G.h + 2;
+    if (s.p.arm === "left") return toStage(s.mid[0] - G.nx * h, s.mid[1] + G.ny * h);
+    if (s.p.arm === "right") return toStage(s.mid[0] + G.nx * h, s.mid[1] + G.ny * h);
+    return toStage(s.mid[0], bottomMid[1] + h);
+  }
+  function route(c, a, key, G) {
+    var r = rel(a.getBoundingClientRect()), left = c.side !== "right";
+    var A = { x: left ? r.x + r.w : r.x, y: r.y + r.h / 2 }, T = target(key, G), arm = segEls[key].s.p.arm;
+    var gOwn = left ? G.gL : G.gR, gOpp = left ? G.gR : G.gL, pts = [A, { x: gOwn, y: A.y }];
+    if ((left && arm === "left") || (!left && arm === "right")) pts.push({ x: gOwn, y: T.y }, T);
+    else if (arm === "bottom") pts.push({ x: gOwn, y: G.yBot }, { x: T.x, y: G.yBot }, T);
+    else { var yc = A.y < (G.yTop + G.yBot) / 2 ? G.yTop : G.yBot; pts.push({ x: gOwn, y: yc }, { x: gOpp, y: yc }, { x: gOpp, y: T.y }, T); }
+    return pts;
+  }
+  function roundPath(pts) {
+    var p = pts.filter(function (q, i) { return i === 0 || Math.hypot(q.x - pts[i - 1].x, q.y - pts[i - 1].y) > 0.5; });
+    var d = "M" + p[0].x.toFixed(1) + " " + p[0].y.toFixed(1);
+    for (var i = 1; i < p.length - 1; i++) {
+      var a = p[i - 1], b = p[i], c = p[i + 1], l1 = Math.hypot(b.x - a.x, b.y - a.y), l2 = Math.hypot(c.x - b.x, c.y - b.y), rr = Math.min(RAD, l1 / 2, l2 / 2);
+      d += " L" + (b.x - (b.x - a.x) / l1 * rr).toFixed(1) + " " + (b.y - (b.y - a.y) / l1 * rr).toFixed(1) +
+           " Q" + b.x.toFixed(1) + " " + b.y.toFixed(1) + " " + (b.x + (c.x - b.x) / l2 * rr).toFixed(1) + " " + (b.y + (c.y - b.y) / l2 * rr).toFixed(1);
+    }
+    var z = p[p.length - 1]; return d + " L" + z.x.toFixed(1) + " " + z.y.toFixed(1);
+  }
+  function threeCols() { return getComputedStyle(stage.querySelector(".vc-grid")).gridTemplateColumns.split(" ").length >= 3; }
+  function drawLinks(pairs) {
+    linksSvg.innerHTML = "";
+    if (!threeCols()) return;                       // cartes empilées : pas de traits
+    var G = geom();
+    pairs.forEach(function (pr) {
+      var pts = route(pr.c, pr.a, pr.key, G), d = roundPath(pts), col = pr.c.accent || "#e8c97a", A = pts[0], T = pts[pts.length - 1];
+      el("path", { class: "vc-lk", d: d, stroke: col, "stroke-width": 6, "stroke-opacity": .12 }, linksSvg);
+      el("path", { class: "vc-lk vc-lk-flow", d: d, stroke: col, "stroke-width": 2.4 }, linksSvg);
+      el("circle", { class: "vc-lk-dot", cx: A.x, cy: A.y, r: 4, fill: col }, linksSvg);
+      el("circle", { class: "vc-lk-dot", cx: T.x, cy: T.y, r: 8, fill: col, "fill-opacity": .25 }, linksSvg);
+      el("circle", { class: "vc-lk-dot", cx: T.x, cy: T.y, r: 4.2, fill: col, stroke: "#0a0e1a", "stroke-width": 1.5 }, linksSvg);
+    });
+  }
+
+  // ── survol ──
+  function spot(img, text, col) {
+    var im = document.getElementById("vc-spot-img");
+    if (img) { im.setAttribute("src", img); im.hidden = false; } else { im.removeAttribute("src"); im.hidden = true; }
+    document.getElementById("vc-spot-dom").textContent = text || "";
+    document.getElementById("vc-spot").style.setProperty("--sc", col || "var(--gold2)");
+    stage.classList.add("spot");
+  }
+  function lift(key) {                              // bloc soulevé vers l'extérieur du V
+    var s = segEls[key].s, dx = s.mid[0] - 300, dy = s.mid[1] - 260, n = Math.hypot(dx, dy) || 1;
+    segEls[key].g.style.transform = "translate(" + (dx / n * 8).toFixed(1) + "px," + (dy / n * 8).toFixed(1) + "px)";
+  }
+  function clearFocus() {
+    stage.classList.remove("focus", "spot"); linksSvg.innerHTML = "";
+    for (var k in segEls) { segEls[k].g.classList.remove("on"); segEls[k].g.style.removeProperty("--hc"); segEls[k].g.style.transform = ""; }
+    cardEls.forEach(function (x) { x.a.classList.remove("on"); });
+  }
+  function focusCard(c) {
+    clearFocus(); stage.classList.add("focus");
+    var me = cardEls.filter(function (x) { return x.c === c; })[0]; me.a.classList.add("on");
+    (c.phases || []).forEach(function (k) { if (!segEls[k]) return; segEls[k].g.classList.add("on"); segEls[k].g.style.setProperty("--hc", c.accent); lift(k); });
+    drawLinks((c.phases || []).filter(function (k) { return segEls[k]; }).map(function (k) { return { c: c, a: me.a, key: k }; }));
+    spot(c.img || "", c.sector, c.accent);
+  }
+  function focusPhase(key) {
+    clearFocus(); stage.classList.add("focus"); segEls[key].g.classList.add("on"); lift(key);
+    var pairs = [];
+    cardEls.forEach(function (x) { if ((x.c.phases || []).indexOf(key) >= 0) { x.a.classList.add("on"); pairs.push({ c: x.c, a: x.a, key: key }); } });
+    if (pairs.length) segEls[key].g.style.setProperty("--hc", pairs[0].c.accent);
+    drawLinks(pairs);
+    spot("", segEls[key].s.p.label, "var(--gold2)");
+  }
+  window.addEventListener("resize", clearFocus);
+
+  // durées : reprises de la chronologie (calculées à partir des dates, y compris « Present »)
+  function syncYears() {
+    cardEls.forEach(function (x) {
+      var d = x.c.href && x.c.href.charAt(0) === "#" ? document.querySelector(x.c.href + " .tl-duration") : null;
+      if (d && d.textContent.trim()) x.a.querySelector(".vc-years").textContent = d.textContent.trim();
+    });
+  }
+  if (document.readyState === "loading") document.addEventListener("DOMContentLoaded", syncYears); else syncYears();
+
+  // ── outil : ordre des cartes qui minimise la longueur totale des traits ──
+  // À lancer dans la console (fenêtre large) : vcycleOptimize()
+  window.vcycleOptimize = function () {
+    if (!threeCols()) return "Élargir la fenêtre (mise en page sur 3 colonnes) puis relancer.";
+    var ids = C.companies.map(function (c) { return c.id; }), start = cardEls.map(function (x) { return x.c.side + ":" + x.c.id; });
+    function arrange(order) {
+      order.forEach(function (id, i) { var x = cardEls.filter(function (e) { return e.c.id === id; })[0]; x.c.side = i < 3 ? "left" : "right"; document.getElementById(i < 3 ? "vc-left" : "vc-right").appendChild(x.a); });
+    }
+    function total() { var G = geom(), t = 0; cardEls.forEach(function (e) { (e.c.phases || []).forEach(function (k) { var p = route(e.c, e.a, k, G); for (var i = 1; i < p.length; i++) t += Math.abs(p[i].x - p[i - 1].x) + Math.abs(p[i].y - p[i - 1].y); }); }); return t; }
+    function perms(a) { if (a.length < 2) return [a]; var o = []; a.forEach(function (v, i) { perms(a.slice(0, i).concat(a.slice(i + 1))).forEach(function (p) { o.push([v].concat(p)); }); }); return o; }
+    var cur = total(), best = null, bestLen = Infinity;
+    perms(ids).forEach(function (o) { arrange(o); var l = total(); if (l < bestLen - 0.5) { bestLen = l; best = o; } });
+    arrange(best);
+    return { actuel: Math.round(cur) + " px", optimal: Math.round(bestLen) + " px", gauche: best.slice(0, 3), droite: best.slice(3),
+             conseil: "Dans VCYCLE.companies, mettre ces expériences dans cet ordre avec side 'left' puis 'right'." };
+  };
+})();
+</script>
 
 <!-- SKILLS -->
 <section id="skills">
@@ -1725,7 +2105,7 @@
       jan:0, feb:1, mar:2, apr:3, may:4, jun:5,
       jul:6, aug:7, sep:8, oct:9, nov:10, dec:11,
       'jan.':0,'feb.':1,'mar.':2,'apr.':3,'may.':4,'jun.':5,
-      'jul.':6,'aug.':7,'sep.':8,'oct.':9,'nov.':10,'dec.':11,
+      'jul.':6,'aug.':7,'sep.':8,'oct.':9,'nov.':10,'dec.':11, sept:8,
       january:0,february:1,march:2,april:3,june:5,
       july:6,august:7,september:8,october:9,november:10,december:11
     };
@@ -2006,205 +2386,7 @@
     if (wrap) wrap.remove();
   }
 
-  function initVCycle(){
-    var SK="vcycle-zones-v4";
-    var DEF=[
-      {id:"epfl",   label:"EPFL",   x:5,         y:5,      w:451.14,  h:279.51,  angle:0, rx:4, href:"#epfl-exp",   highlights:[{x:501.04,  y:266.92, w:143.19, h:251.28, angle:-89.5, rx:30}]},
-      {id:"wyss",   label:"Wyss",   x:599.95,    y:4.24,   w:483.65,  h:294.17,  angle:0, rx:4, href:"#wyss-exp",   highlights:[{x:530.41,  y:310.45, w:148.98, h:328.13, angle:-31,   rx:30}]},
-      {id:"hach",   label:"Hach",   x:1261.58,   y:5,      w:533.42,  h:279.17,  angle:0, rx:4, href:"#hach-exp",   highlights:[{x:940.43,  y:298.40, w:147.23, h:538.37, angle:32,    rx:30},{x:497,     y:468,    w:685,    h:147,    angle:0,     rx:30}]},
-      {id:"debio",  label:"Debio",  x:5,         y:564.60, w:562.64,  h:428.05,  angle:0, rx:4, href:"#debio-exp",  highlights:[{x:568.72,  y:288.38, w:164.61, h:527.27, angle:-31,   rx:30}]},
-      {id:"cytiva", label:"Cytiva", x:1215,      y:325,    w:580,     h:375,     angle:0, rx:4, href:"#cytiva-exp", highlights:[{x:498.26,  y:469,    w:682.76, h:145.89, angle:0,     rx:30},{x:746.99, y:492.20, w:535.56, h:148.64, angle:-58,   rx:30}]},
-      {id:"crane",  label:"Crane",  x:1260.54,   y:700,    w:534.46,  h:304.29,  angle:0, rx:4, href:"#crane-exp",  highlights:[{x:673,     y:624,    w:313.00, h:273.33, angle:0,     rx:50}]}
-    ];
-    var zones; try{zones=JSON.parse(localStorage.getItem(SK));}catch(e){}
-    if(!Array.isArray(zones)||!zones.length) zones=JSON.parse(JSON.stringify(DEF));
-    zones.forEach(function(z){
-      if(!z.highlights){if(z.highlight)z.highlights=[z.highlight];else{var d=DEF.filter(function(d){return d.id===z.id;})[0];z.highlights=d?JSON.parse(JSON.stringify(d.highlights)):[{x:z.x+z.w/4,y:z.y+z.h/4,w:z.w/2,h:z.h/2,angle:0,rx:10}];}delete z.highlight;}
-      if(!z.highlights.length)z.highlights.push({x:z.x+z.w/4,y:z.y+z.h/4,w:z.w/2,h:z.h/2,angle:0,rx:10});
-    });
-    var editMode=false,selId=null,selHlIdx=-1;
-    var NS="http://www.w3.org/2000/svg";
-    var wrap=document.querySelector(".vc-slide-wrap");
-    var svg=wrap.querySelector(".vc-overlay");
-    var panel=document.getElementById("vc-editor-panel");
-    var eBtn=document.getElementById("vc-edit-btn");
-    function rotPt(px,py,cx,cy,angle){var a=angle*Math.PI/180,c=Math.cos(a),s=Math.sin(a),dx=px-cx,dy=py-cy;return {x:cx+dx*c-dy*s,y:cy+dx*s+dy*c};}
-    function rotDelta(ddx,ddy,angle){var a=-angle*Math.PI/180;return {x:ddx*Math.cos(a)-ddy*Math.sin(a),y:ddx*Math.sin(a)+ddy*Math.cos(a)};}
-    function buildSVG(){
-      while(svg.firstChild)svg.removeChild(svg.firstChild);
-      zones.forEach(function(z){ if(editMode&&selId&&selId!==z.id)return;
-        var cx=z.x+z.w/2,cy=z.y+z.h/2;
-        var r=document.createElementNS(NS,"rect");
-        r.setAttribute("class","company-zone"+(editMode&&selId===z.id?" zone-selected":""));
-        r.setAttribute("id","zone-"+z.id);r.setAttribute("x",z.x);r.setAttribute("y",z.y);
-        r.setAttribute("width",z.w);r.setAttribute("height",z.h);r.setAttribute("rx",z.rx!=null?z.rx:4);
-        r.setAttribute("data-href",z.href);
-        if(z.angle)r.setAttribute("transform","rotate("+z.angle+","+cx+","+cy+")");
-        svg.appendChild(r);
-        z.highlights.forEach(function(hl,hi){
-          var hcx=hl.x+hl.w/2,hcy=hl.y+hl.h/2;
-          var isSel=editMode&&selId===z.id&&selHlIdx===hi;
-          var hr=document.createElementNS(NS,"rect");
-          hr.setAttribute("class","ph-seg"+(isSel?" ph-selected":""));
-          hr.setAttribute("id","hl-"+z.id+"-"+hi);
-          hr.setAttribute("data-hlzid",z.id);hr.setAttribute("data-hlidx",hi);
-          hr.setAttribute("x",hl.x);hr.setAttribute("y",hl.y);
-          hr.setAttribute("width",hl.w);hr.setAttribute("height",hl.h);
-          hr.setAttribute("rx",hl.rx!=null?hl.rx:10);
-          if(hl.angle)hr.setAttribute("transform","rotate("+hl.angle+","+hcx+","+hcy+")");
-          svg.appendChild(hr);
-        });
-        if(editMode){
-          var t=document.createElementNS(NS,"text");t.setAttribute("class","zone-edit-label");
-          t.setAttribute("x",cx);t.setAttribute("y",cy);t.setAttribute("text-anchor","middle");t.setAttribute("dominant-baseline","middle");
-          t.setAttribute("fill",selId===z.id?"rgba(200,170,90,1)":"rgba(200,170,90,.55)");
-          t.setAttribute("font-size","20");t.setAttribute("font-family","DM Mono,monospace");
-          if(z.angle)t.setAttribute("transform","rotate("+z.angle+","+cx+","+cy+")");
-          t.textContent=z.label;svg.appendChild(t);
-          if(selId===z.id&&selHlIdx>=0&&selHlIdx<z.highlights.length){
-            var hl=z.highlights[selHlIdx];var hcx=hl.x+hl.w/2,hcy=hl.y+hl.h/2;
-            [{h:"tl",px:z.x,py:z.y},{h:"tr",px:z.x+z.w,py:z.y},{h:"br",px:z.x+z.w,py:z.y+z.h},{h:"bl",px:z.x,py:z.y+z.h}].forEach(function(c){var pt=rotPt(c.px,c.py,cx,cy,z.angle||0);var hh=document.createElementNS(NS,"circle");hh.setAttribute("class","vc-handle");hh.setAttribute("cx",pt.x);hh.setAttribute("cy",pt.y);hh.setAttribute("r","7");hh.setAttribute("data-handle",c.h);hh.setAttribute("data-zid",z.id);svg.appendChild(hh);});
-            var rtop=rotPt(cx,z.y-28,cx,cy,z.angle||0);var rl=document.createElementNS(NS,"line");rl.setAttribute("class","vc-handle-line");rl.setAttribute("x1",cx);rl.setAttribute("y1",z.y);rl.setAttribute("x2",rtop.x);rl.setAttribute("y2",rtop.y);svg.appendChild(rl);
-            var rh=document.createElementNS(NS,"circle");rh.setAttribute("class","vc-handle-rot");rh.setAttribute("cx",rtop.x);rh.setAttribute("cy",rtop.y);rh.setAttribute("r","8");rh.setAttribute("data-handle","rot");rh.setAttribute("data-zid",z.id);svg.appendChild(rh);
-            [{h:"tl",px:hl.x,py:hl.y},{h:"tr",px:hl.x+hl.w,py:hl.y},{h:"br",px:hl.x+hl.w,py:hl.y+hl.h},{h:"bl",px:hl.x,py:hl.y+hl.h}].forEach(function(c){var pt=rotPt(c.px,c.py,hcx,hcy,hl.angle||0);var hh=document.createElementNS(NS,"circle");hh.setAttribute("class","vc-hl-handle");hh.setAttribute("cx",pt.x);hh.setAttribute("cy",pt.y);hh.setAttribute("r","6");hh.setAttribute("data-handle",c.h);hh.setAttribute("data-hlzid",z.id);svg.appendChild(hh);});
-            [{h:"t",px:hl.x+hl.w/2,py:hl.y},{h:"r",px:hl.x+hl.w,py:hl.y+hl.h/2},{h:"b",px:hl.x+hl.w/2,py:hl.y+hl.h},{h:"l",px:hl.x,py:hl.y+hl.h/2}].forEach(function(c){var pt=rotPt(c.px,c.py,hcx,hcy,hl.angle||0);var hh=document.createElementNS(NS,"circle");hh.setAttribute("class","vc-hl-edge");hh.setAttribute("cx",pt.x);hh.setAttribute("cy",pt.y);hh.setAttribute("r","5");hh.setAttribute("data-handle",c.h);hh.setAttribute("data-hlzid",z.id);svg.appendChild(hh);});
-            var hrtop=rotPt(hcx,hl.y-24,hcx,hcy,hl.angle||0);var hrl=document.createElementNS(NS,"line");hrl.setAttribute("class","vc-handle-line");hrl.setAttribute("x1",hcx);hrl.setAttribute("y1",hl.y);hrl.setAttribute("x2",hrtop.x);hrl.setAttribute("y2",hrtop.y);svg.appendChild(hrl);
-            var hrh=document.createElementNS(NS,"circle");hrh.setAttribute("class","vc-hl-handle-rot");hrh.setAttribute("cx",hrtop.x);hrh.setAttribute("cy",hrtop.y);hrh.setAttribute("r","7");hrh.setAttribute("data-handle","rot");hrh.setAttribute("data-hlzid",z.id);svg.appendChild(hrh);
-          }
-        }
-      });
-      if(editMode)wrap.classList.add("edit-mode");else wrap.classList.remove("edit-mode");
-      bindEvts();
-    }
-    function bindEvts(){
-      svg.querySelectorAll(".company-zone").forEach(function(rect){
-        var zid=rect.id.replace("zone-","");var z=zones.filter(function(z){return z.id===zid;})[0];if(!z)return;
-        if(editMode){
-          rect.addEventListener("mousedown",function(e){
-            e.preventDefault();e.stopPropagation();
-            selId=zid;selHlIdx=-1;buildSVG();updatePanel();
-            var sr=svg.getBoundingClientRect(),sx=1800/sr.width,sy=1013/sr.height;
-            var mx=e.clientX,my=e.clientY,x0=z.x,y0=z.y;
-            function mv(ev){z.x=Math.round(x0+(ev.clientX-mx)*sx);z.y=Math.round(y0+(ev.clientY-my)*sy);buildSVG();syncInputs();}
-            function up(){document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);}
-            document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
-          });
-        }else{
-          rect.addEventListener("mouseenter",function(){svg.querySelectorAll(".ph-seg[data-hlzid=\""+zid+"\"]").forEach(function(el){el.classList.add("active");});});
-          rect.addEventListener("mouseleave",function(){document.querySelectorAll(".ph-seg.active").forEach(function(el){el.classList.remove("active");});});
-          rect.addEventListener("click",function(){var h=rect.getAttribute("data-href");if(h){var t=document.querySelector(h);if(t)t.scrollIntoView({behavior:"smooth",block:"center"});}});
-        }
-      });
-      svg.querySelectorAll(".ph-seg").forEach(function(rect){
-        var zid=rect.getAttribute("data-hlzid");var hi=parseInt(rect.getAttribute("data-hlidx")||"0");
-        var z=zones.filter(function(z){return z.id===zid;})[0];if(!z)return;
-        rect.addEventListener("mousedown",function(e){
-          e.preventDefault();e.stopPropagation();
-          var changed=selId!==zid||selHlIdx!==hi;
-          selId=zid;selHlIdx=hi;buildSVG();updatePanel();
-          if(changed)return;
-          var hl=z.highlights[hi];
-          var sr=svg.getBoundingClientRect(),sx=1800/sr.width,sy=1013/sr.height;
-          var mx=e.clientX,my=e.clientY,x0=hl.x,y0=hl.y;
-          function mv(ev){hl.x=Math.round(x0+(ev.clientX-mx)*sx);hl.y=Math.round(y0+(ev.clientY-my)*sy);buildSVG();syncInputs();}
-          function up(){document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);}
-          document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
-        });
-      });
-      svg.querySelectorAll(".vc-handle,.vc-handle-rot").forEach(function(hel){
-        hel.addEventListener("mousedown",function(e){
-          e.preventDefault();e.stopPropagation();
-          var htype=hel.getAttribute("data-handle"),zid=hel.getAttribute("data-zid");
-          var z=zones.filter(function(z){return z.id===zid;})[0];if(!z)return;
-          var sr=svg.getBoundingClientRect(),sx=1800/sr.width,sy=1013/sr.height;
-          var mx=e.clientX,my=e.clientY,x0=z.x,y0=z.y,w0=z.w,h0=z.h,cx0=x0+w0/2,cy0=y0+h0/2;
-          function mv(ev){var ddx=(ev.clientX-mx)*sx,ddy=(ev.clientY-my)*sy;if(htype==="rot"){var msx=(ev.clientX-sr.left)*sx,msy=(ev.clientY-sr.top)*sy;z.angle=Math.round((Math.atan2(msx-cx0,-(msy-cy0))*180/Math.PI)*2)/2;}else{var loc=rotDelta(ddx,ddy,z.angle||0);if(htype==="br"){z.w=Math.max(20,w0+loc.x);z.h=Math.max(20,h0+loc.y);}else if(htype==="tr"){z.w=Math.max(20,w0+loc.x);z.h=Math.max(20,h0-loc.y);z.y=y0+(h0-z.h);}else if(htype==="tl"){z.w=Math.max(20,w0-loc.x);z.h=Math.max(20,h0-loc.y);z.x=x0+(w0-z.w);z.y=y0+(h0-z.h);}else if(htype==="bl"){z.w=Math.max(20,w0-loc.x);z.h=Math.max(20,h0+loc.y);z.x=x0+(w0-z.w);}}buildSVG();syncInputs();}
-          function up(){document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);}
-          document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
-        });
-      });
-      svg.querySelectorAll(".vc-hl-handle,.vc-hl-handle-rot,.vc-hl-edge").forEach(function(hel){
-        hel.addEventListener("mousedown",function(e){
-          e.preventDefault();e.stopPropagation();
-          var htype=hel.getAttribute("data-handle"),zid=hel.getAttribute("data-hlzid");
-          var z=zones.filter(function(z){return z.id===zid;})[0];if(!z)return;
-          var hl=z.highlights[selHlIdx];if(!hl)return;
-          var sr=svg.getBoundingClientRect(),sx=1800/sr.width,sy=1013/sr.height;
-          var mx=e.clientX,my=e.clientY,x0=hl.x,y0=hl.y,w0=hl.w,h0=hl.h,cx0=x0+w0/2,cy0=y0+h0/2;
-          function mv(ev){var ddx=(ev.clientX-mx)*sx,ddy=(ev.clientY-my)*sy;if(htype==="rot"){var msx=(ev.clientX-sr.left)*sx,msy=(ev.clientY-sr.top)*sy;hl.angle=Math.round((Math.atan2(msx-cx0,-(msy-cy0))*180/Math.PI)*2)/2;}else{var loc=rotDelta(ddx,ddy,hl.angle||0);var a=(hl.angle||0)*Math.PI/180,sa=Math.sin(a),ca=Math.cos(a);var Bwx=cx0-h0/2*sa,Bwy=cy0+h0/2*ca,Twx=cx0+h0/2*sa,Twy=cy0-h0/2*ca,Rwx=cx0+w0/2*ca,Rwy=cy0+w0/2*sa,Lwx=cx0-w0/2*ca,Lwy=cy0-w0/2*sa;if(htype==="br"){hl.w=Math.max(20,w0+loc.x);hl.h=Math.max(20,h0+loc.y);}else if(htype==="tr"){hl.w=Math.max(20,w0+loc.x);hl.h=Math.max(20,h0-loc.y);hl.y=y0+(h0-hl.h);}else if(htype==="tl"){hl.w=Math.max(20,w0-loc.x);hl.h=Math.max(20,h0-loc.y);hl.x=x0+(w0-hl.w);hl.y=y0+(h0-hl.h);}else if(htype==="bl"){hl.w=Math.max(20,w0-loc.x);hl.h=Math.max(20,h0+loc.y);hl.x=x0+(w0-hl.w);}else if(htype==="t"){var nh=Math.max(20,h0-loc.y);var nhcx=Bwx+nh/2*sa;var nhcy=Bwy-nh/2*ca;hl.h=nh;hl.x=nhcx-w0/2;hl.y=nhcy-nh/2;}else if(htype==="b"){var nh=Math.max(20,h0+loc.y);var nhcx=Twx-nh/2*sa;var nhcy=Twy+nh/2*ca;hl.h=nh;hl.x=nhcx-w0/2;hl.y=nhcy-nh/2;}else if(htype==="l"){var nw=Math.max(20,w0-loc.x);var nhcx=Rwx-nw/2*ca;var nhcy=Rwy-nw/2*sa;hl.w=nw;hl.x=nhcx-nw/2;hl.y=nhcy-h0/2;}else if(htype==="r"){var nw=Math.max(20,w0+loc.x);var nhcx=Lwx+nw/2*ca;var nhcy=Lwy+nw/2*sa;hl.w=nw;hl.x=nhcx-nw/2;hl.y=nhcy-h0/2;}}buildSVG();syncInputs();}
-          function up(){document.removeEventListener("mousemove",mv);document.removeEventListener("mouseup",up);}
-          document.addEventListener("mousemove",mv);document.addEventListener("mouseup",up);
-        });
-      });
-    }
-    function syncInputs(){
-      var z=zones.filter(function(z){return z.id===selId;})[0];if(!z)return;
-      ["x","y","w","h","angle","rx"].forEach(function(f){var el=document.getElementById("ep-"+f);if(el)el.value=z[f]!=null?Math.round(z[f]*100)/100:0;});
-      var hl=selHlIdx>=0?z.highlights[selHlIdx]:null;
-      if(hl)["x","y","w","h","angle","rx"].forEach(function(f){var el=document.getElementById("ep-hl-"+f);if(el)el.value=hl[f]!=null?Math.round(hl[f]*100)/100:0;});
-    }
-    function buildZoneFields(z){
-      var hlChips=z.highlights.map(function(hl,hi){return "<span class=\"ep-zone-chip ep-hl-chip"+(selHlIdx===hi?" sel":"")+"\" data-hlidx=\""+hi+"\">HL"+(hi+1)+"</span>";}).join("");
-      var hl=selHlIdx>=0?z.highlights[selHlIdx]:null;
-      var hlFields=hl?("<div class=\"ep-row\">"+
-        "<label>X <input type=\"number\" id=\"ep-hl-x\" class=\"ep-hl-f\" data-f=\"x\" value=\""+Math.round(hl.x)+"\"></label>"+
-        "<label>Y <input type=\"number\" id=\"ep-hl-y\" class=\"ep-hl-f\" data-f=\"y\" value=\""+Math.round(hl.y)+"\"></label>"+
-        "<label>L <input type=\"number\" id=\"ep-hl-w\" class=\"ep-hl-f\" data-f=\"w\" value=\""+Math.round(hl.w)+"\"></label>"+
-        "<label>H <input type=\"number\" id=\"ep-hl-h\" class=\"ep-hl-f\" data-f=\"h\" value=\""+Math.round(hl.h)+"\"></label>"+
-        "<label>&deg; <input type=\"number\" id=\"ep-hl-angle\" class=\"ep-hl-f\" data-f=\"angle\" value=\""+(hl.angle||0)+"\" step=\"0.5\"></label>"+
-        "<label>&#8991; <input type=\"number\" id=\"ep-hl-rx\" class=\"ep-hl-f\" data-f=\"rx\" value=\""+(hl.rx!=null?hl.rx:10)+"\" min=\"0\" step=\"1\" style=\"width:50px\"></label>"+
-        "</div>"):"<div style=\"color:#555;font-size:.72rem;margin:.2rem 0\">Clique une surbrillance pour editer</div>";
-      var delBtn=z.highlights.length>1?"<button class=\"vc-save-btn\" id=\"ep-hl-del\" style=\"padding:.1rem .5rem;font-size:.7rem;color:#f99\">&#10005;</button>":"";
-      return ("<div style=\"color:rgba(200,170,90,.75);font-size:.72rem;margin:.35rem 0 .15rem\">Zone de survol</div>"+
-        "<div class=\"ep-row\">"+
-        "<label>X <input type=\"number\" id=\"ep-x\" class=\"ep-f\" data-f=\"x\" value=\""+Math.round(z.x)+"\"></label>"+
-        "<label>Y <input type=\"number\" id=\"ep-y\" class=\"ep-f\" data-f=\"y\" value=\""+Math.round(z.y)+"\"></label>"+
-        "<label>L <input type=\"number\" id=\"ep-w\" class=\"ep-f\" data-f=\"w\" value=\""+Math.round(z.w)+"\"></label>"+
-        "<label>H <input type=\"number\" id=\"ep-h\" class=\"ep-f\" data-f=\"h\" value=\""+Math.round(z.h)+"\"></label>"+
-        "<label>&deg; <input type=\"number\" id=\"ep-angle\" class=\"ep-f\" data-f=\"angle\" value=\""+(z.angle||0)+"\" step=\"0.5\"></label>"+
-        "<label>&#8991; <input type=\"number\" id=\"ep-rx\" class=\"ep-f\" data-f=\"rx\" value=\""+(z.rx!=null?z.rx:4)+"\" min=\"0\" step=\"1\" style=\"width:50px\"></label>"+
-        "</div>"+
-        "<div style=\"color:rgba(255,180,0,.85);font-size:.72rem;margin:.55rem 0 .15rem\">Surbrillances &nbsp;"+hlChips+" <button class=\"vc-save-btn\" id=\"ep-hl-add\" style=\"padding:.1rem .5rem;font-size:.7rem\">+</button> "+delBtn+"</div>"+
-        hlFields);
-    }
-    function updatePanel(){
-      if(!editMode){panel.innerHTML="";panel.classList.remove("visible");return;}
-      var zChips=zones.map(function(z){return "<span class=\"ep-zone-chip"+(selId===z.id?" sel":"")+"\" data-zid=\""+z.id+"\">"+z.label+"</span>";}).join("");
-      var z=zones.filter(function(z){return z.id===selId;})[0];
-      panel.innerHTML=
-        "<div style=\"color:rgba(200,170,90,.9);font-weight:bold;margin-bottom:.2rem\">Zones</div>"+
-        "<div class=\"ep-zone-list\">"+zChips+"</div>"+
-        (z?buildZoneFields(z):"<div style=\"color:#555;margin:.4rem 0\">Clique sur une zone pour editer</div>")+
-        "<div class=\"ep-row\" style=\"margin-top:.5rem\">"+
-        "<button class=\"vc-save-btn\" id=\"ep-save\">Sauvegarder</button> "+
-        "<button class=\"vc-save-btn\" id=\"ep-reset\">Reinitialiser</button> "+
-        "<button class=\"vc-save-btn\" id=\"ep-export\">Copier DEF</button>"+
-        "</div>";
-      panel.classList.add("visible");
-      panel.querySelectorAll(".ep-zone-chip[data-zid]").forEach(function(c){c.addEventListener("click",function(){selId=c.dataset.zid;selHlIdx=-1;buildSVG();updatePanel();});});
-      panel.querySelectorAll(".ep-hl-chip[data-hlidx]").forEach(function(c){c.addEventListener("click",function(){selHlIdx=parseInt(c.dataset.hlidx);buildSVG();updatePanel();});});
-      if(z){
-        panel.querySelectorAll(".ep-f").forEach(function(inp){inp.addEventListener("input",function(){z[this.dataset.f]=parseFloat(this.value)||0;buildSVG();});});
-        panel.querySelectorAll(".ep-hl-f").forEach(function(inp){inp.addEventListener("input",function(){var hl=z.highlights[selHlIdx];if(!hl)return;hl[this.dataset.f]=parseFloat(this.value)||0;buildSVG();});});
-        var addBtn=document.getElementById("ep-hl-add");
-        if(addBtn)addBtn.addEventListener("click",function(){var src=selHlIdx>=0?z.highlights[selHlIdx]:null;var n=src?JSON.parse(JSON.stringify(src)):{x:z.x+z.w/4,y:z.y+z.h/4,w:Math.round(z.w/2),h:Math.round(z.h/2),angle:0,rx:10};if(src){n.x+=20;n.y+=20;}z.highlights.push(n);selHlIdx=z.highlights.length-1;buildSVG();updatePanel();});
-        var delBtn=document.getElementById("ep-hl-del");
-        if(delBtn)delBtn.addEventListener("click",function(){if(z.highlights.length<=1)return;z.highlights.splice(selHlIdx,1);selHlIdx=Math.min(selHlIdx,z.highlights.length-1);buildSVG();updatePanel();});
-      }
-      var sv=document.getElementById("ep-save");if(sv)sv.addEventListener("click",function(){localStorage.setItem(SK,JSON.stringify(zones));sv.textContent="OK";setTimeout(function(){sv.textContent="Sauvegarder";},1800);});
-      var rs=document.getElementById("ep-reset");if(rs)rs.addEventListener("click",function(){if(confirm("Reinitialiser?")){zones=JSON.parse(JSON.stringify(DEF));localStorage.removeItem(SK);selId=null;selHlIdx=-1;buildSVG();updatePanel();}});
-      var ex=document.getElementById("ep-export");if(ex)ex.addEventListener("click",function(){navigator.clipboard&&navigator.clipboard.writeText(JSON.stringify(zones,null,2));});
-    }
-    eBtn.addEventListener("click",function(){
-      editMode=!editMode;
-      eBtn.textContent=editMode?"X Quitter edition":"Editer les zones";
-      eBtn.classList.toggle("active",editMode);
-      if(!editMode){selId=null;selHlIdx=-1;}
-      buildSVG();updatePanel();
-    });
-    buildSVG();
-  }
-  initVCycle();
+
 </script>
 
 <!-- LIGHTBOX -->
